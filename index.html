@@ -1,29 +1,60 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>QR Studio | ساخت QR Code</title>
 
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 
+    <!-- QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
+
 
 <body>
 
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
     <nav class="navbar">
+
         <div class="logo">
-            <div class="logo-icon">QR</div>
-            <span>QR</span>Studio
+
+            <div class="logo-icon">
+                QR
+            </div>
+
+            <div class="logo-text">
+                <span>QR</span> Studio
+            </div>
+
         </div>
+
 
         <div class="nav-badge">
-            سریع، رایگان و حرفه‌ای
+            سریع • رایگان • حرفه‌ای
         </div>
+
     </nav>
 
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
 
     <header class="hero">
 
@@ -33,14 +64,16 @@
                 ✦ ابزار حرفه‌ای ساخت QR Code
             </div>
 
+
             <h1>
                 QR Code خودت را
                 <span>بساز</span>
             </h1>
 
+
             <p>
-                لینک، متن، شماره تلفن، ایمیل یا اطلاعات Wi-Fi
-                را وارد کن و در چند ثانیه QR Code خودت را بساز.
+                لینک، متن، شماره تلفن، ایمیل یا اطلاعات
+                Wi-Fi را وارد کن و QR Code خودت را بساز.
             </p>
 
         </div>
@@ -48,59 +81,127 @@
     </header>
 
 
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
     <main class="container">
+
 
         <section class="generator">
 
+
+            <!-- =========================
+                 FORM
+            ========================== -->
+
             <div class="form-section">
 
-                <h2>ساخت QR Code</h2>
+
+                <h2>
+                    ساخت QR Code
+                </h2>
+
 
                 <p class="subtitle">
-                    نوع اطلاعات موردنظر را انتخاب کنید.
+                    نوع اطلاعاتی که می‌خواهید به QR تبدیل شود را انتخاب کنید.
                 </p>
 
 
+
+                <!-- QR TYPES -->
+
                 <div class="types">
 
-                    <button class="type-btn active" data-type="url">
+
+                    <button
+                        class="type-btn active"
+                        data-type="url"
+                    >
+
                         <span>🔗</span>
+
                         لینک
+
                     </button>
 
-                    <button class="type-btn" data-type="text">
+
+
+                    <button
+                        class="type-btn"
+                        data-type="text"
+                    >
+
                         <span>📝</span>
+
                         متن
+
                     </button>
 
-                    <button class="type-btn" data-type="phone">
+
+
+                    <button
+                        class="type-btn"
+                        data-type="phone"
+                    >
+
                         <span>📞</span>
+
                         تلفن
+
                     </button>
 
-                    <button class="type-btn" data-type="email">
+
+
+                    <button
+                        class="type-btn"
+                        data-type="email"
+                    >
+
                         <span>✉️</span>
+
                         ایمیل
+
                     </button>
 
-                    <button class="type-btn" data-type="wifi">
+
+
+                    <button
+                        class="type-btn"
+                        data-type="wifi"
+                    >
+
                         <span>📶</span>
+
                         Wi-Fi
+
                     </button>
 
+
                 </div>
 
 
-                <div class="error" id="error">
-                    لطفاً اطلاعات را وارد کنید.
+
+                <!-- ERROR -->
+
+                <div
+                    class="error"
+                    id="error"
+                >
+                    لطفاً اطلاعات موردنظر را وارد کنید.
                 </div>
 
+
+
+                <!-- INPUT -->
 
                 <div class="field">
 
                     <label id="inputLabel">
                         لینک سایت
                     </label>
+
 
                     <textarea
                         id="mainInput"
@@ -110,13 +211,20 @@
                 </div>
 
 
+
+                <!-- OPTIONS -->
+
                 <div class="options">
+
+
+                    <!-- COLOR -->
 
                     <div class="field">
 
                         <label>
                             رنگ QR Code
                         </label>
+
 
                         <div class="color-box">
 
@@ -125,6 +233,7 @@
                                 id="qrColor"
                                 value="#0a2471"
                             >
+
 
                             <span id="colorValue">
                                 #0a2471
@@ -135,11 +244,15 @@
                     </div>
 
 
+
+                    <!-- SIZE -->
+
                     <div class="field">
 
                         <label>
-                            اندازه QR
+                            اندازه QR Code
                         </label>
+
 
                         <select id="qrSize">
 
@@ -147,13 +260,19 @@
                                 کوچک
                             </option>
 
-                            <option value="250" selected>
+
+                            <option
+                                value="250"
+                                selected
+                            >
                                 متوسط
                             </option>
+
 
                             <option value="300">
                                 بزرگ
                             </option>
+
 
                             <option value="350">
                                 خیلی بزرگ
@@ -163,34 +282,52 @@
 
                     </div>
 
+
                 </div>
 
+
+
+                <!-- GENERATE BUTTON -->
 
                 <button
                     class="generate-btn"
                     id="generateBtn"
                 >
+
                     ✨ ساخت QR Code
+
                 </button>
+
 
             </div>
 
 
+
+            <!-- =========================
+                 PREVIEW
+            ========================== -->
+
             <div class="preview">
+
 
                 <h3>
                     پیش‌نمایش
                 </h3>
 
+
                 <div class="qr-box">
+
 
                     <div id="qrcode">
 
+
                         <div class="placeholder">
+
 
                             <div class="placeholder-icon">
                                 ▦
                             </div>
+
 
                             <p>
                                 اطلاعات خود را وارد کنید
@@ -198,102 +335,160 @@
                                 تا QR Code اینجا نمایش داده شود.
                             </p>
 
+
                         </div>
+
 
                     </div>
 
+
                 </div>
 
+
+
+                <!-- PDF DOWNLOAD -->
 
                 <button
                     class="download-btn"
                     id="downloadBtn"
                 >
-                    ⬇️ دانلود QR Code
+
+                    📄 دانلود PDF
+
                 </button>
 
+
             </div>
+
 
         </section>
 
 
+
+        <!-- =========================
+             FEATURES
+        ========================== -->
+
         <section class="features">
+
 
             <h2>
                 امکانات QR Studio
             </h2>
 
+
             <div class="feature-grid">
 
+
                 <div class="feature">
+
 
                     <div class="feature-icon">
                         ⚡
                     </div>
 
+
                     <h3>
-                        سریع
+                        سریع و آسان
                     </h3>
 
+
                     <p>
-                        در چند ثانیه QR Code خودت را بساز.
+                        فقط اطلاعات را وارد کن و در چند ثانیه
+                        QR Code خودت را بساز.
                     </p>
+
 
                 </div>
 
 
+
                 <div class="feature">
+
 
                     <div class="feature-icon">
                         🎨
                     </div>
 
+
                     <h3>
                         قابل تنظیم
                     </h3>
 
+
                     <p>
-                        رنگ و اندازه QR Code را انتخاب کن.
+                        رنگ و اندازه QR Code را مطابق
+                        سلیقه خودت تغییر بده.
                     </p>
 
+
                 </div>
+
 
 
                 <div class="feature">
 
+
                     <div class="feature-icon">
-                        📥
+                        📄
                     </div>
 
+
                     <h3>
-                        دانلود
+                        خروجی PDF
                     </h3>
 
+
                     <p>
-                        QR Code خودت را به صورت PNG دانلود کن.
+                        QR Code ساخته‌شده را به صورت
+                        PDF دانلود و چاپ کن.
                     </p>
+
 
                 </div>
 
+
             </div>
 
+
         </section>
+
 
     </main>
 
 
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
     <footer>
+
         ساخته شده با ❤️ توسط
-        <strong>QR Studio</strong>
+
+        <strong>
+            QR Studio
+        </strong>
+
     </footer>
 
 
-    <div class="toast" id="toast">
+
+    <!-- TOAST -->
+
+    <div
+        class="toast"
+        id="toast"
+    >
         QR Code با موفقیت ساخته شد ✓
     </div>
 
 
+
+    <!-- JAVASCRIPT -->
+
     <script src="script.js"></script>
 
 </body>
+
 </html>
