@@ -1,6 +1,10 @@
 let currentType = "url";
 
 
+// =========================
+// ELEMENTS
+// =========================
+
 const typeButtons =
     document.querySelectorAll(".type-btn");
 
@@ -35,7 +39,9 @@ const toast =
     document.getElementById("toast");
 
 
-/* متن‌های مربوط به هر نوع QR */
+// =========================
+// SETTINGS
+// =========================
 
 const settings = {
 
@@ -66,35 +72,44 @@ const settings = {
     wifi: {
         label: "اطلاعات Wi-Fi",
         placeholder:
-            "مثلاً نام وای‌فای و رمز عبور"
+            "مثلاً MyWifi,12345678"
     }
 
 };
 
 
-/* انتخاب نوع QR */
+// =========================
+// SELECT QR TYPE
+// =========================
 
 typeButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
+        // حذف active از همه
         typeButtons.forEach(btn => {
             btn.classList.remove("active");
         });
 
+        // فعال کردن دکمه انتخاب شده
         button.classList.add("active");
 
+        // نوع فعلی
         currentType =
             button.dataset.type;
 
+        // تغییر عنوان
         inputLabel.textContent =
             settings[currentType].label;
 
+        // تغییر placeholder
         mainInput.placeholder =
             settings[currentType].placeholder;
 
+        // پاک کردن ورودی
         mainInput.value = "";
 
+        // مخفی کردن خطا
         error.classList.remove("show");
 
     });
@@ -102,7 +117,9 @@ typeButtons.forEach(button => {
 });
 
 
-/* نمایش رنگ */
+// =========================
+// COLOR
+// =========================
 
 qrColor.addEventListener("input", () => {
 
@@ -112,7 +129,9 @@ qrColor.addEventListener("input", () => {
 });
 
 
-/* ساخت QR */
+// =========================
+// GENERATE QR
+// =========================
 
 generateBtn.addEventListener(
     "click",
@@ -126,6 +145,7 @@ function generateQR() {
         mainInput.value.trim();
 
 
+    // بررسی خالی بودن
     if (!value) {
 
         error.textContent =
@@ -137,7 +157,9 @@ function generateQR() {
     }
 
 
-    /* لینک */
+    // =========================
+    // URL
+    // =========================
 
     if (currentType === "url") {
 
@@ -154,7 +176,9 @@ function generateQR() {
     }
 
 
-    /* تلفن */
+    // =========================
+    // PHONE
+    // =========================
 
     if (currentType === "phone") {
 
@@ -164,7 +188,9 @@ function generateQR() {
     }
 
 
-    /* ایمیل */
+    // =========================
+    // EMAIL
+    // =========================
 
     if (currentType === "email") {
 
@@ -174,31 +200,43 @@ function generateQR() {
     }
 
 
-    /* وای‌فای */
+    // =========================
+    // WIFI
+    // =========================
 
     if (currentType === "wifi") {
 
+        const parts =
+            value.split(",");
+
+        const wifiName =
+            parts[0]?.trim() || "";
+
+        const wifiPassword =
+            parts[1]?.trim() || "";
+
         value =
-            "WIFI:S:" +
-            value +
-            ";;";
+            `WIFI:T:WPA;S:${wifiName};P:${wifiPassword};;`;
 
     }
 
 
+    // حذف خطا
     error.classList.remove("show");
 
 
-    /* پاک کردن QR قبلی */
-
+    // پاک کردن QR قبلی
     qrcode.innerHTML = "";
 
 
+    // اندازه QR
     const size =
         Number(qrSize.value);
 
 
-    /* ساخت QR */
+    // =========================
+    // CREATE QR
+    // =========================
 
     new QRCode(qrcode, {
 
@@ -220,75 +258,185 @@ function generateQR() {
     });
 
 
-    /* نمایش دانلود */
-
+    // نمایش دکمه PDF
     downloadBtn.classList.add("show");
 
 
+    // پیام موفقیت
     showToast();
 
 }
 
 
-/* دانلود */
+// =========================
+// DOWNLOAD PDF
+// =========================
 
 downloadBtn.addEventListener(
     "click",
-    downloadQR
+    downloadPDF
 );
 
 
-function downloadQR() {
+function downloadPDF() {
 
     const canvas =
         qrcode.querySelector("canvas");
 
-    const image =
-        qrcode.querySelector("img");
 
+    if (!canvas) {
 
-    let url;
+        error.textContent =
+            "ابتدا QR Code را بسازید.";
 
+        error.classList.add("show");
 
-    if (canvas) {
-
-        url =
-            canvas.toDataURL("image/png");
-
-    }
-    else if (image) {
-
-        url =
-            image.src;
-
-    }
-
-
-    if (!url) {
         return;
     }
 
 
-    const link =
-        document.createElement("a");
+    // بررسی jsPDF
+    if (!window.jspdf) {
+
+        alert(
+            "کتابخانه PDF بارگذاری نشده است. اینترنت خود را بررسی کنید."
+        );
+
+        return;
+    }
 
 
-    link.href = url;
-
-    link.download =
-        "qr-code.png";
+    const { jsPDF } =
+        window.jspdf;
 
 
-    document.body.appendChild(link);
+    // =========================
+    // CREATE PDF
+    // =========================
 
-    link.click();
+    const pdf =
+        new jsPDF({
 
-    document.body.removeChild(link);
+            orientation: "portrait",
+
+            unit: "mm",
+
+            format: "a4"
+
+        });
+
+
+    // تبدیل QR به تصویر
+    const imageData =
+        canvas.toDataURL("image/png");
+
+
+    // اندازه صفحه A4
+    const pageWidth = 210;
+    const pageHeight = 297;
+
+
+    // اندازه QR
+    const qrSize = 100;
+
+
+    // وسط صفحه
+    const x =
+        (pageWidth - qrSize) / 2;
+
+    const y =
+        (pageHeight - qrSize) / 2;
+
+
+    // =========================
+    // PDF HEADER
+    // =========================
+
+    pdf.setTextColor(10, 36, 113);
+
+    pdf.setFontSize(24);
+
+    pdf.text(
+        "QR Studio",
+        pageWidth / 2,
+        35,
+        {
+            align: "center"
+        }
+    );
+
+
+    pdf.setTextColor(100, 100, 100);
+
+    pdf.setFontSize(12);
+
+    pdf.text(
+        "QR Code",
+        pageWidth / 2,
+        48,
+        {
+            align: "center"
+        }
+    );
+
+
+    // =========================
+    // QR CODE
+    // =========================
+
+    pdf.addImage(
+        imageData,
+        "PNG",
+        x,
+        y,
+        qrSize,
+        qrSize
+    );
+
+
+    // =========================
+    // FOOTER
+    // =========================
+
+    pdf.setTextColor(10, 36, 113);
+
+    pdf.setFontSize(11);
+
+    pdf.text(
+        "Generated by QR Studio",
+        pageWidth / 2,
+        275,
+        {
+            align: "center"
+        }
+    );
+
+
+    // خط طلایی
+    pdf.setDrawColor(255, 185, 9);
+
+    pdf.setLineWidth(1);
+
+    pdf.line(
+        55,
+        265,
+        155,
+        265
+    );
+
+
+    // =========================
+    // SAVE
+    // =========================
+
+    pdf.save("QR-Studio.pdf");
 
 }
 
 
-/* پیام موفقیت */
+// =========================
+// TOAST
+// =========================
 
 function showToast() {
 
@@ -304,7 +452,9 @@ function showToast() {
 }
 
 
-/* ساخت QR با Ctrl + Enter */
+// =========================
+// CTRL + ENTER
+// =========================
 
 mainInput.addEventListener(
     "keydown",
